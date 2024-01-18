@@ -57,7 +57,7 @@ ML process in more details
 
 * Cross-Validation: Before final evaluation, you often use techniques like k-fold cross-validation during training to validate your model on different subsets of the data. This helps ensure that the model generalizes well and is not just memorizing the training data (overfitting).
 * Evaluation on a Test Set: After training, evaluate your model's performance on a separate test dataset that was not used during the training process. This is crucial to gauge how well your model will perform on new, unseen data.
-* Metrics: Use appropriate evaluation metrics (like accuracy, precision, recall, F1-score, ROC-AUC for classification problems; MSE, RMSE, MAE for regression problems) to quantify model performance.
+* Confusion Metrics: Use appropriate evaluation metrics (like accuracy, precision, recall, F1-score, ROC-AUC for classification problems; MSE, RMSE, MAE for regression problems) to quantify model performance.
 * Model Tuning: Based on the evaluation, you might go back to tune your model, adjust parameters, or even try different algorithms.
 
 8)Model Refinement:
