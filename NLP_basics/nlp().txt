@@ -1,7 +1,0 @@
-doc3 = nlp(u'Can I please have 500 dollars of Microsoft stock?')
-nlp(...): When you pass the string to the nlp object, SpaCy processes the text using its language model. This process includes:
-
-Tokenization: Breaking the text into individual words or tokens.
-Part-of-Speech (POS) Tagging: Assigning parts of speech to each token, like noun, verb, adjective, etc.
-Dependency Parsing: Analyzing the grammatical structure of the sentence.
-Named Entity Recognition (NER): Identifying entities in the text, such as "Microsoft" being recognized as an organization.
