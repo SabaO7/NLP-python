@@ -1,0 +1,32 @@
+TF-IDF (Term Frequency-Inverse Document Frequency) and Word Embedding are both techniques used in natural language processing (NLP) for converting text data into numerical representations, but they differ significantly in their approach and the type of information they capture.
+
+### TF-IDF
+
+1. **Basic Concept**: TF-IDF is a statistical measure used to evaluate the importance of a word to a document in a collection or corpus. It's based on the frequency of the word in the document but offset by the frequency of the word in the corpus, which helps to adjust for the fact that some words are generally more common than others.
+
+2. **Representation**: In TF-IDF, each word or term in the document is represented as a number that reflects its relative importance in the document and across the corpus. Documents are transformed into vectors where each dimension corresponds to a specific word in the corpus, and the value in each dimension is the TF-IDF score of the word in the document.
+
+3. **Use Cases**: TF-IDF is often used in tasks like information retrieval, document classification, and document clustering. It's useful for extracting the main topics or keywords from a document.
+
+4. **Limitations**: TF-IDF does not capture word order or the context of words in a document. It treats each word independently and doesn't account for semantic relationships between words.
+
+### Word Embedding
+
+1. **Basic Concept**: Word embedding is a technique that represents words as dense vectors in a continuous vector space where semantically similar words are mapped to nearby points. These embeddings capture more than just the frequency of words; they also capture the contexts and semantic meanings.
+
+2. **Representation**: In word embedding models like Word2Vec, GloVe, or BERT, each word is represented by a dense vector (often with several hundred dimensions). These vectors are learned in a way that words appearing in similar contexts have similar embeddings.
+      ** Word2Vec trains words against other words that neighbour them in the input corpus, it does this via either 
+      *** 1) using context to predict a target word (a method known as continuous bag of words or CBOW) 
+      *** 2) using a word to predict a target context, which is called skip-gram
+
+3. **Use Cases**: Word embeddings are used in a wide range of NLP applications, including machine translation, sentiment analysis, and named entity recognition. They are particularly useful for tasks that require an understanding of word meanings and contexts.
+
+4. **Limitations**: While word embeddings capture semantic relationships, they require a large amount of data to train and can be computationally intensive. They might also capture and amplify biases present in the training data.
+
+### Key Differences
+
+- **Information Captured**: TF-IDF focuses on the frequency and uniqueness of words, while word embeddings focus on capturing semantic and contextual relationships between words.
+- **Complexity and Depth**: Word embeddings are generally more complex and capture deeper linguistic features compared to the relatively simpler TF-IDF.
+- **Dependency on Corpus**: TF-IDF depends heavily on the specific corpus used, whereas word embeddings can be pre-trained on large datasets and transferred across different tasks.
+
+In summary, while TF-IDF is useful for tasks that rely on word frequency and uniqueness, word embeddings are more suitable for tasks that require an understanding of word meanings, synonyms, and context.

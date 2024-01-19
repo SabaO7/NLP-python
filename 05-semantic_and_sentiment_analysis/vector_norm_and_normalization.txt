@@ -1,0 +1,26 @@
+### Vector Norm
+
+1. **Definition**: The vector norm, specifically the L2 norm or Euclidean norm, is a measure of the magnitude or length of a vector. It's calculated as the square root of the sum of the squared elements of the vector.
+        Each word is represented as a 300-dimensional vector, where each dimension is a feature representing some aspect of the word's semantic meaning.
+        The vector norm is calculated by taking the square root of the sum of the squares of these 300 values   
+
+2. **Use Cases**:
+   - Comparing vector sizes: In NLP, the norm can give you a sense of how large or influential a word vector is.
+   - Preprocessing before normalization: The norm is used in the normalization process.
+
+### Normalization
+
+1. **Definition**: Normalization of a vector involves scaling the vector so that its length (norm) is 1 but it retains its direction in space. This is done by dividing each element of the vector by the vector's norm.
+       
+2. **Use Cases**:
+   - Preparing data for machine learning models: Many algorithms perform better when input vectors are of consistent length.
+   - Computing similarity: When vectors are normalized, calculating the cosine similarity between them is more straightforward, as it only depends on the angle between the vectors, not their length.
+
+### Example
+
+Imagine a simple 2D vector `[3, 4]`. 
+
+- **Vector Norm**: The L2 norm of `[3, 4]` is calculated as `sqrt(3² + 4²) = sqrt(9 + 16) = sqrt(25) = 5`. So, the length of the vector `[3, 4]` is 5.
+- **Normalization**: To normalize this vector, divide each component by the norm: `[3/5, 4/5]`. The normalized vector is `[0.6, 0.8]`. This vector now has a length of 1 but points in the same direction as the original vector `[3, 4]`.
+
+In this example, the vector norm gives us the length of the original vector, and normalization adjusts the vector so that its length is 1 while maintaining its direction. This is particularly useful in NLP and machine learning, where consistent input vector sizes can significantly impact model performance and the interpretation of vector relationships.

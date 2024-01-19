@@ -1,0 +1,182 @@
+#vector arithmetics - creating a new vector by adding or subtracting known vectors 
+from scipy import spatial #we do this because we need to calculate cosine similarity ourselves
+
+cosine_similarity = lambda vec1, vec2: 1 - spatial.distance.cosine(vec1, vec2) #this is the formula for cosine similarity
+##lambda is a keyword in Python used to create small anonymous functions. These functions are called "anonymous" because they don't need to be named. They are useful for creating quick, short functions that are not too complex.
+## Cosine similarity is the complement of cosine distance. It is calculated as 1 - cosine distance.
+##By subtracting the cosine distance from 1, you get a measure of similarity instead of difference.
+
+
+king = nlp.vocab['king'].vector
+man = nlp.vocab['man'].vector
+woman = nlp.vocab['woman'].vector
+
+#now we are going to ask for the king - man + woman --> new_vector
+new_vector = king - man + woman 
+computed_similarities = []
+for word in nlp.vocab:
+    if word.has_vector:
+        if word.is_lower:
+            if word.is_alpha: #this is to make sure that the word is not a number or a punctuation
+                similarity = cosine_similarity(new_vector, word.vector) #the new_vector is the vector that we created above, and the word.vector is the vector of the word that we are comparing to
+                computed_similarities.append((word, similarity)) #append is a function that adds an element to the end of the list
+
+computed_similarities = sorted(computed_similarities, key=lambda item: -item[1]) #this is to sort the list by the second element in the tuple (the similarity value)
+print([t[0].text for t in computed_similarities[:10]]) #this is to print the first 10 words in the list
+______________________________________________________________________
+
+*Lets break down the above example:
+
+In the line `cosine_similarity = lambda vec1, vec2: 1 - spatial.distance.cosine(vec1, vec2)`, the comma (`,`) and the colon (`:`) play specific roles in the syntax of the lambda function in Python. Here's how to read and understand these symbols:
+
+1. **Comma (`,`)**:
+   - The comma in `lambda vec1, vec2` is used to separate multiple parameters of the lambda function. In this case, `vec1` and `vec2` are the two parameters the function takes.
+   - When you read it, you can interpret it as: "Define a lambda function that takes two parameters, `vec1` and `vec2`".
+
+2. **Colon (`:`)**:
+   - The colon in `lambda vec1, vec2: ...` signifies the start of the function body or the expression that the lambda function will execute and return.
+   - Everything after the colon is the operation or expression that the lambda function will perform when it's called. In this case, it's `1 - spatial.distance.cosine(vec1, vec2)`.
+   - You can read it as: "The function will calculate and return the result of `1 - spatial.distance.cosine(vec1, vec2)`".
+
+Putting it all together, the entire line can be read as:
+
+- "Create a function named `cosine_similarity` that takes two parameters, `vec1` and `vec2`, and returns the result of `1` minus the cosine distance between these vectors."
+
+The use of `lambda` here allows for a concise definition of a small, unnamed function that's directly assigned to a variable, without needing the more verbose `def` function syntax. It's particularly handy for simple functions like this one, where you're just computing a single expression.
+
+Sure, let's break down the code from `computed_similarities` onward:
+
+```python
+computed_similarities = []
+for word in nlp.vocab:
+    if word.has_vector:
+        if word.is_lower:
+            if word.is_alpha:
+                similarity = cosine_similarity(new_vector, word.vector)
+                computed_similarities.append((word, similarity))
+
+computed_similarities = sorted(computed_similarities, key=lambda item: -item[1])
+print([t[0].text for t in computed_similarities[:10]])
+```
+
+### Computed Similarities Loop:
+
+1. **Initialization**:
+   - `computed_similarities = []`: An empty list named `computed_similarities` is created. This list will store pairs (tuples) of words and their cosine similarity scores to `new_vector`.
+
+2. **Looping Through Vocabulary**:
+   - `for word in nlp.vocab`: This loop iterates over each word in the SpaCy vocabulary (`nlp.vocab`).
+
+3. **Conditions Inside the Loop**:
+   - `if word.has_vector`: Checks if the current word has an associated vector representation.
+   - `if word.is_lower`: Checks if the word is in lowercase.
+   - `if word.is_alpha`: Checks if the word is purely alphabetic (not a number or punctuation).
+        ```python
+        similarity = cosine_similarity(new_vector, word.vector)
+        computed_similarities.append((word, similarity))
+        ```
+
+        ### Computing Similarity
+
+        - **`similarity = cosine_similarity(new_vector, word.vector)`**:
+          - Here, we're calling the function `cosine_similarity` and passing two arguments to it: `new_vector` and `word.vector`.
+          - `new_vector` is the result of the vector arithmetic you performed earlier (king - man + woman), representing a new semantic concept in the vector space.
+          - `word.vector` is the vector representation of the current word from the SpaCy vocabulary that you're iterating over.
+          - The `cosine_similarity` function computes how similar these two vectors are in terms of direction in the multi-dimensional space. The similarity score will be a number between -1 and 1:
+            - A score close to 1 means the vectors are very similar in direction.
+            - A score around 0 means there's little similarity.
+            - A score close to -1 (which is less common in typical NLP applications) would indicate opposing directions.
+          - This similarity score is then stored in the variable `similarity`.
+
+        ### Storing Results
+
+        - **`computed_similarities.append((word, similarity))`**:
+          - This line adds the current word and its similarity score to the list `computed_similarities`.
+          - `.append()` is a method to add an item to the end of a list.
+          - `((word, similarity))` creates a tuple, which is a pair of values. The first element of the tuple is `word` (the current word object from SpaCy), and the second element is `similarity` (the cosine similarity score you just computed).
+          - By appending this tuple to `computed_similarities`, you're effectively building a list where each item is a pair consisting of a word and how similar its meaning is to the concept represented by `new_vector`.
+
+        In essence, as you iterate through the words in the SpaCy vocabulary, you're calculating how similar each word is to the synthetic concept you've created (king - man + woman), and you're storing these similarity scores along with the corresponding words in a list for later use. This process enables you to rank or compare words based on their semantic proximity to the concept represented by `new_vector`.
+
+4. **Computing Similarity and Storing Results**:
+   - `similarity = cosine_similarity(new_vector, word.vector)`: Calculates the cosine similarity between `new_vector` (calculated earlier as `king - man + woman`) and the vector of the current word which is every word in the spacy library.
+   - `computed_similarities.append((word, similarity))`: Appends a tuple of the word and its similarity score to the `computed_similarities` list.
+
+### Sorting and Printing Results:
+
+1. **Sorting the List**:
+   - `computed_similarities = sorted(computed_similarities, key=lambda item: -item[1])`: Sorts the `computed_similarities` list based on similarity scores in descending order (`-item[1]` means sorting by the second element of each tuple, i.e., the similarity score, in descending order).
+
+>>
+          Sure, let's dissect the line `computed_similarities = sorted(computed_similarities, key=lambda item: -item[1])` for a more detailed understanding:
+
+          1. **The `sorted` Function**:
+            - `sorted(...)`: This is a built-in Python function used to sort iterables. In this context, it's being used to sort the list `computed_similarities`.
+            - The `sorted` function returns a new list (it doesn't change the original list) and sorts the elements in ascending order by default.
+
+          2. **What is Being Sorted**:
+            - `computed_similarities`: This is the list you created earlier, where each element is a tuple. Each tuple contains a word from the SpaCy vocabulary and its corresponding cosine similarity to `new_vector`.
+
+          3. **Sorting Key - `key=lambda item: -item[1]`**:
+            - `key=...`: This argument in the `sorted` function tells Python how to sort the list. You're not sorting the tuples simply by their natural order; instead, you're specifying a particular criteria for sorting.
+            - `lambda item: -item[1]`: This is a lambda function that takes an element of `computed_similarities` (referred to as `item`) and returns the value that should be used for sorting that element. 
+              - `item` is expected to be a tuple, where `item[0]` is a word, and `item[1]` is its cosine similarity score.
+              - `-item[1]`: This means you're sorting based on the cosine similarity score, but in descending order (because of the negative sign). The highest similarity scores come first in the sorted list.
+              >>>
+
+                  ### Understanding `key=lambda item: -item[1]`
+
+                  1. **`key=` Parameter**:
+                    - In the `sorted` function, the `key` parameter specifies a function to be called on each list element prior to making comparisons for sorting.
+                    - The result of this key function determines the order of elements in the sorted list.
+
+                  2. **Lambda Function**:
+                    - `lambda item: ...`: This is a lambda function, which is a short, anonymous function in Python. Here, `item` is the name given to the argument of this function. Each element of the list `computed_similarities` will be passed to this lambda function during sorting.
+                    - In the context of your list, each `item` is a tuple where `item[0]` is a word (from SpaCy vocabulary) and `item[1]` is its cosine similarity score.
+
+                  3. **Function Operation (`-item[1]`)**:
+                    - `-item[1]`: This expression takes the second element of the tuple (the cosine similarity score) and negates it.
+                    - By negating the similarity score, you're effectively telling the `sorted` function to sort the tuples in descending order of their similarity scores. Normally, `sorted` sorts in ascending order, but the negation reverses this.
+
+                  ### How to Read It
+
+                  - When you read `key=lambda item: -item[1]`, interpret it as:
+                    - "For each element (`item`) in the list, use the negative of its second element (`-item[1]`, which is the cosine similarity score) as the key for sorting. This will sort the elements in descending order based on their cosine similarity scores."
+
+                  ### Practical Implication
+
+                  - When `computed_similarities` is sorted using this key, the tuples with the highest cosine similarity scores come first in the list, because negating the scores makes larger numbers (higher similarities) smaller, and the `sorted` function arranges elements from smallest to largest based on the key.
+
+                  In essence, this sorting mechanism is used to rank the words from most similar to least similar to the `new_vector` (the vector representing the combination of 'king', 'man', and 'woman') based on their cosine similarity scores.
+                  
+                  
+                  item represents an element from your list. In your case, item is a tuple where:
+                  item[0] is a word object from SpaCy.
+                  item[1] is the cosine similarity score associated with this word.
+                  -item[1] means you're taking the cosine similarity score and negating it (multiplying it by -1).
+                >>>>
+
+>>
+
+2. **Printing Top 10 Similar Words**:
+   - `print([t[0].text for t in computed_similarities[:10]])`: Prints the text of the first 10 words in the sorted list. This is achieved by slicing the sorted list to get the first 10 elements (`computed_similarities[:10]`) and then extracting the text of the word (`t[0].text`) from each tuple.
+    >>>
+          The line `print([t[0].text for t in computed_similarities[:10]])` is using Python's list comprehension along with slicing to print the first 10 words from the sorted list `computed_similarities`. Let's break it down:
+
+          1. **List Comprehension**:
+            - `[t[0].text for t in computed_similarities[:10]]`: This is a list comprehension, a concise way to create a new list by iterating over an existing list.
+            - `for t in computed_similarities[:10]`: This part iterates over the first 10 elements of `computed_similarities`. The `[:10]` is a slice operation that takes the first 10 elements from the list.
+            - `t[0].text`: For each tuple `t` in the sliced list, this expression accesses the first element of the tuple (`t[0]`) which is a word object from SpaCy, and then gets its text representation using `.text`. This extracts the actual string (word) from each word object.
+
+          2. **Creating a New List**:
+            - The whole list comprehension creates a new list of strings, where each string is the text of a word from the first 10 elements in `computed_similarities`.
+
+          3. **Printing the Result**:
+            - `print(...)`: This prints the new list created by the list comprehension. It will display the texts of the first 10 words that were most similar to the `new_vector` (the combination of 'king', 'man', and 'woman').
+
+          ### Reading the Line
+
+          - When reading this line, you can think of it as: "Print the text of the first 10 word objects from the sorted `computed_similarities` list."
+
+    >>>>
+In essence, this part of the code is finding words in the SpaCy vocabulary whose vectors are most similar to the vector created from the combination of 'king', 'man', and 'woman', and then prints out the top 10 most similar words.
