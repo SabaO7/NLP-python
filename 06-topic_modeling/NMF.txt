@@ -1,0 +1,38 @@
+Non-negative Matrix Factorization (NMF) is a group of algorithms in multivariate analysis and linear algebra where a matrix \( V \) is factorized into (usually) two matrices \( W \) and \( H \), with the property that all three matrices have no negative elements. This non-negativity makes the resulting matrices easier to inspect. NMF is commonly used for data analysis tasks like clustering, dimensionality reduction, and feature extraction.
+
+### Basic Idea of NMF:
+
+1. **Matrix Factorization:**
+   - Suppose you have a matrix \( V \) of size \( m \times n \), where \( m \) could represent features (like words in documents) and \( n \) represents samples (like documents).
+   - NMF aims to break down this matrix \( V \) into two matrices:
+     - \( W \): An \( m \times k \) matrix.
+     - \( H \): A \( k \times n \) matrix.
+   - Here, \( k \) is a chosen number, typically smaller than \( m \) and \( n \), representing the reduced dimensionality or the number of latent features.
+
+2. **Non-negativity:**
+   - As the name suggests, NMF restricts the matrices \( W \), \( H \), and \( V \) to have only non-negative elements. This constraint leads to a parts-based representation because it only allows additive, not subtractive, combinations.
+
+### Application in Topic Modeling:
+
+In the context of topic modeling:
+
+- **Matrix \( V \):** This could be a document-term matrix, where each entry represents the frequency of a term (word) in a document.
+- **Matrix \( W \):** This matrix can be interpreted as the topics discovered from the documents. Each column in \( W \) represents a topic, and each row represents a term with its corresponding weight in that topic.
+- **Matrix \( H \):** This matrix represents the contribution of each topic to each document. Each column of \( H \) is a document, and each row shows the extent to which a particular topic is present in that document.
+
+### Working Mechanism:
+
+- **Initialization and Iterative Update:**
+  - The matrices \( W \) and \( H \) are initially filled with random non-negative values.
+  - Then, a cost function (like the Frobenius norm of the difference between \( V \) and the product \( WH \)) is iteratively minimized, updating \( W \) and \( H \) each time. Various algorithms can be used for this optimization, like gradient descent or more specialized approaches.
+
+- **Resulting Factorization:**
+  - After several iterations, \( W \) and \( H \) converge to a point where the product \( WH \) approximates \( V \) as closely as possible under the non-negativity constraints.
+  - The factorization uncovers latent patterns in the data, represented in a way that only allows for additive combinations.
+
+### Advantages and Uses:
+
+- **Interpretability:** Due to its additive nature, NMF often results in more interpretable components than other techniques like PCA (Principal Component Analysis), which allows both positive and negative values.
+- **Applications:** NMF is widely used in text mining for topic extraction, image processing for feature extraction, and in bioinformatics for gene expression analysis.
+
+In summary, Non-negative Matrix Factorization is a technique for decomposing a matrix into factors with the constraint of non-negativity, making it particularly useful for applications where the data and factors are inherently non-negative, such as in topic modeling with document-term matrices.

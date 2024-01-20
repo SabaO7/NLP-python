@@ -1,0 +1,99 @@
+#Overview of Topic Modeling 
+
+##topic modeling is an unsupervised learning approach to clustering documents, modeling topics, and inferring topic-document associations
+## because its unsupervised, evaluation is difficult
+## There are two main approaches to topic modeling: LDA (Latent Dirichlet Allocation) and NMF (Non-negative Matrix Factorization)
+
+#LDA
+## there are two assumptions made when using LDA:
+## 1) documents with similar topics use similar groups of words
+    ### mathematically thinking: documents are probability distributions over latent (underlying) topics
+## 2) documents that have groups of words frequently occuring together usually have the same topic
+    ### mathematically thinking: topics are probability distributions over words
+
+## LDA is a generative probabilistic model; it represents docuemnts as mixture of topics that spit out words with certain probabilities
+## it assumes that the documents are produced in the following fashion:
+## 1) determine the number of words in a document (N)
+## 2) choose a topic mixture for the document (from a Dirichlet distribution over a fixed set of K topics)
+## 3) generate each word in the document by:
+    ### first picking a topic (from the multinomial distribution that you sampled above)
+    ### then using the topic to generate the word itself (from the topic's multinomial distribution)
+
+##Assuming thats how you built the document, you can then reverse engineer it to figure out what topics your documents contain and what words define those topics, this is what LDA does
+
+
+#Scenario: we have a set of doccuments and have chosen the k number of topics we want to extract from the documents
+## the person needs to choose the number of topics they want to extract from the documents
+## we then want to know what words belong to which topics and what topics belong to which documents 
+## we then go through each document and RANDOMLY assign each word in the document to a topic (from the k topics)
+### this random assignment already gives you both the topic representation of all document and the word distribution of all topic (because you randomly assigned each word to a topic)
+## we then iterate through each word in each document and do the following:
+    ### for every word w in every document d and for each topic t we calculate:
+        #### 1) p(topic t | document d) = the proportion of words in document d that are currently assigned to topic t
+        #### 2) p(word w | topic t) = the proportion of assignments to topic t over all documents that come from this word w
+
+## we then reassign w a new topic, where we choose topic t with probability p(topic t | document d) * p(word w | topic t)
+### this is the probability that topic t generated word w, so it makes sense that we would assign w to topic t with this probability
+
+## we then repeat the previous step multiple times and eventually reach a steady state where the assignments are acceptable
+## the end product is that each document assigned to a topic, and we can search for the words that heve the highest probability of being assigned to a topic
+>>>>
+    More details:
+                1. **Starting Point - Set of Documents and Choosing K:**
+                - You have a collection of documents.
+                - You (the user) need to decide on the number of topics (K) you believe are represented across these documents. This is a crucial step as it sets the foundation for the topic modeling process.
+
+                2. **Objective:**
+                - Your goal is to find out two things:
+                    - Which words are most representative of each topic (K).
+                    - Which topics are most prevalent in each document.
+
+                3. **Initial Random Assignment of Words to Topics:**
+                - To start, you randomly assign each word in each document to one of the K topics.
+                - This random assignment is a starting point. It gives an initial, though not accurate, distribution of topics across documents and words across topics.
+
+                4. **Iterative Process for Each Word in Each Document:**
+                - Now, for each word in each document, you begin an iterative process. Let's say you're looking at a specific word 'w' in a document 'd':
+                    - **Calculate p(topic t | document d):** This is the probability that the topic 't' is relevant to the document 'd', based on the current assignment of words to topics. It's like asking, "Given the words in this document, how likely is it that this document is about topic 't'?"
+                    - **Calculate p(word w | topic t):** This is the probability that the word 'w' belongs to topic 't', based on the current assignments across all documents. It's like asking, "Given the documents where this word appears, how likely is it that this word is representative of topic 't'?"
+
+                5. **Reassigning Words to Topics:**
+                - After calculating these probabilities, you then reassign each word 'w' to a new topic. The topic 't' is chosen based on the product of the two probabilities calculated above: p(topic t | document d) * p(word w | topic t).
+                - This step is critical because it's where the model starts learning from its initial random assignments. The word is reassigned to the topic where it most likely belongs, based on the current state of the model.
+
+                6. **Repeating the Process:**
+                - This process of reassessment and reassignment is repeated multiple times for each word in each document.
+                - Over time, the model starts converging to a state where the words are more accurately assigned to topics, reflecting the true distribution of topics in documents and words in topics.
+
+                7. **End Result:**
+                - After several iterations, you reach a point where the assignments don't change much with further iterations. This is known as a steady state.
+                - At this point, each document in your collection has been analyzed for its topic composition. You can now identify which topics are most relevant in each document.
+                - Additionally, for each topic, you can find the words that are most representative, i.e., the words with the highest probability of belonging to that topic.
+
+                In summary, this scenario describes an iterative learning process where you start with random assignments of words to topics and gradually refine these assignments based on the probabilities of words belonging to topics and topics being relevant to documents. The end goal is to uncover the hidden topic structure in your document collection.
+>>>>
+#important notes 
+## 1) the number of topics k is a hyperparameter that you need to set
+## 2) the user must interpret the topics after the algorithm has run (meaning the user decides what the topics are based on the words that are assigned to each topic)
+## 3) the algorithm is sensitive to the order of documents, so you need to shuffle the documents before running LDA
+
+
+_________________________________________________________
+In topic modeling with LDA (Latent Dirichlet Allocation), the central idea is indeed to cluster words into topics and then match documents to these topics. The concept revolves around the notion that topics are the central elements around which the entire model is built. Here's how it works in a simplified manner:
+
+1. **Clustering Words into Topics:**
+   - The LDA algorithm tries to identify clusters of words that frequently occur together in the documents. Each of these clusters represents a "topic".
+   - The algorithm doesn’t know the meaning of the words or the topics; it just identifies patterns in word usage across the documents. For example, if words like 'government', 'policy', and 'election' frequently appear together in multiple documents, LDA may cluster these into a topic, which we might interpret as "politics".
+
+2. **Matching Documents to Topics:**
+   - Once the topics are identified, LDA then determines the mixture of these topics in each document.
+   - A single document might be related to multiple topics in different proportions. For instance, a news article might be 70% about politics, 20% about economy, and 10% about international relations.
+
+3. **Topic as the Center:**
+   - In this framework, the topic is indeed at the center of everything. Words are grouped based on their association with topics, and documents are analyzed based on their composition of these topics.
+   - The final outcome is that you understand which topics are present in your collection of documents and to what extent each document is related to each topic.
+
+4. **Interpreting Topics:**
+   - It's important to note that LDA only provides the mathematical model to cluster words and match documents to these word clusters (topics). It's up to the human interpreter to look at the words in each cluster and give a meaningful label or interpretation to each topic. 
+
+So, in essence, LDA helps uncover the hidden thematic structure in a large collection of documents, making topics the focal point around which words and documents are organized and understood.

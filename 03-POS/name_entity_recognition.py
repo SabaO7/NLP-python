@@ -15,10 +15,10 @@ nlp = spacy.load('en_core_web_sm')
 #def is a function that takes a document and returns the named entities in the document
 def show_ents(doc):
     if doc.ents:
-          for ent in doc.ents:
-              print(ent.text + ' - ' + ent.label_ + ' - ' + str(spacy.explain(ent.label_)))
+        for ent in doc.ents:
+            print(ent.text + ' - ' + ent.label_ + ' - ' + str(spacy.explain(ent.label_)))
     else:
-          print('No named entities found.')
+        print('No named entities found.')
 
 #example with no named entities
 doc1 = nlp(u'Hi how are you?')
@@ -52,7 +52,7 @@ print(show_ents(doc4))
 
 #adding multiple entities (vacuum cleaner and vacuum-cleaner)
 doc5 = nlp(u'Our company created a brand new vacuum cleaner.'
-          u'This new vacuum-cleaner is the best in show.')
+        u'This new vacuum-cleaner is the best in show.')
 show_ents(doc5)
 
 #creating a new entity
