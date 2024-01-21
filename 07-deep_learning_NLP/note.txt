@@ -1,0 +1,39 @@
+
+Kares is a library we use in this lecture 
+
+Perceptron-Model:
+*Process starts with inputs being multiplied by a weight (often picked randomly), and once that is done, the entire thing will be passed to an activation function (there are many activation functions, you just pick which one you want to use for your case use)
+  ** also known as the Z value , Z = wx + b 
+  ** there are a few isseus with this conceopt, however, to overcome it you add a bias number as another input 
+* you can have multiple perceptrons network which can include an input layer (real values of data), number of hidden layers (if you have 3 or more layers is "deep network"), and an output layers
+
+Activation Function
+* can be sigmoid function which is not ideal as it does not look at smaller changes (it goes from 0 to 1) OR 
+* Hyperbolic Tangent its more dynamic and it goes from -1 to 1 OR
+* Rectified Linear Unit (ReLU), common activation function, based of Z value return maximum value (if the z is negative, the return value is always 0, and if its a positive value then the output is your z value)
+  ** often has the best perforamance and knows as a state of the art
+  ** the Z value is the weight*input plus bias 
+
+Recurrent Neural Network
+* used for sequential data (sentence = sequence of text)
+* sequence is a vector of information 
+* normal neuran can take a lot of input and then they get aggregated and then goes through an activation function to produce an output
+* in RNN, the output is sent back to itself and becomes an input
+* cells that are a function of inputs from previous time steps are also known as memory cells
+  ** note that the output becomes an input so it has to be stored somewhere --> memory cells
+* RNN are also flexible in their input and outputs, for both sequences and single vector values 
+  ** for exampl:
+    *** we could do a sequence input and sequence output (prediction from sale data from a future timeframe)
+    *** feed a sequence data and then receive an vector of output (positve sentiment or negative sentiment)
+    *** vector input and then let the output be a sequence (input = hello, the output would be =how are you?)
+
+Long-short-term-memory (LSTM)
+* RNN may forget initial inputs if the text becomes very long, this is where LSTM comes in 
+* Process:
+  ** first step is the Forget Layer (from the cell state, what can we forget, based on a sigmoid function (1 = keep it, 0 =forget about it))
+  ** second step is to figure out what new information we are going to store in the cell state, it goes through a sigmoid layer and then goes through hyperbolic tangent layer, this creates a vector with new candidate values
+  ** third is to combine the results of two and update the cell state; in the exampel of a language model, we want to add the gender of the new subject to the cell state and replace teh old one that we already decided we are forgetting
+* Types of common LSTM cells: Peephole and Gated Recurrent Unit
+
+Keras has an API that makes LSTM and RNN very easy to use :D BLESSS!!!
+
